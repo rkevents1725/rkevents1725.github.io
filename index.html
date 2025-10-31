@@ -5,15 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RK Events | Best Decoration at Best Price</title>
   <meta name="description" content="RK Events – Wedding, Birthday, Corporate event decoration at the best price."/>
-  <link rel="stylesheet" href="./style.css"/>
+  
+  <!-- INTERNAL CSS -->
+  <style>
+    :root{
+      --brand:#f5af19;     /* golden */
+      --accent:#f12711;    /* red-orange */
+      --bg:#0e0e0e;
+      --panel:#151515;
+      --text:#ffffff;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial;
+      color:var(--text);
+      background:#000;
+    }
+
+    /* NAVBAR */
+    .nav{
+      position:sticky; top:0; z-index:20;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 16px;
+      background:rgba(0,0,0,.55); backdrop-filter:saturate(140%) blur(6px);
+      border-bottom:1px solid rgba(255,255,255,.1);
+    }
+    .nav .left{display:flex; align-items:center; gap:10px}
+    .nav img.logo{height:40px;width:auto}
+    .nav a{color:#fff; text-decoration:none}
+    .brand{font-weight:700; letter-spacing:.4px}
+    .links{display:flex; gap:16px; align-items:center}
+    .links a{opacity:.9}
+    .links a.active,.links a:hover{opacity:1; text-decoration:underline}
+    /* mobile nav */
+    .menu-btn{display:none; background:transparent; border:0; font-size:28px; color:#fff}
+    @media (max-width:720px){
+      .links{display:none; position:absolute; left:0; right:0; top:58px; 
+             background:rgba(0,0,0,.9); padding:12px 16px; flex-direction:column; border-bottom:1px solid rgba(255,255,255,.1)}
+      .links a{padding:8px 0}
+      .menu-btn{display:block}
+      .links.open{display:flex}
+    }
+
+    /* HERO */
+    .hero{
+      min-height:70vh;
+      display:grid; place-items:center;
+      text-align:center; padding:56px 16px;
+      background:#000 url("./bg.jpg") center/cover no-repeat fixed;
+    }
+    .overlay{
+      background:linear-gradient(135deg, rgba(241,39,17,.75), rgba(245,175,25,.75));
+      border-radius:18px; padding:28px 20px; max-width:900px; margin:auto;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+      animation: pop .6s ease-out;
+    }
+    @keyframes pop{from{transform:translateY(10px); opacity:0} to{transform:none;opacity:1}}
+    h1{font-size:clamp(28px,6vw,48px); margin:0 0 8px}
+    h2{font-size:clamp(22px,4.5vw,32px)}
+    .muted{color:#e9e9e9; opacity:.9}
+
+    /* BUTTONS */
+    .btn{
+      display:inline-block; padding:12px 18px; border-radius:999px; font-weight:600;
+      border:1px solid rgba(255,255,255,.6); color:#fff; text-decoration:none;
+      transition:transform .15s ease, filter .15s ease;
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(1.05)}
+    .btn.primary{background:linear-gradient(90deg,var(--brand),var(--accent)); border:none}
+    .btn.ghost{background:transparent}
+
+    /* SECTIONS */
+    .section{padding:48px 16px; background:var(--bg)}
+    .container{max-width:1100px; margin:auto}
+    .grid{
+      display:grid; gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    }
+    .card{
+      background:var(--panel); border:1px solid rgba(255,255,255,.08);
+      border-radius:14px; padding:18px; text-align:left;
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .card:hover{transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.25)}
+
+    /* FOOTER */
+    .footer{
+      background:#0b0b0b; padding:24px 16px; text-align:center; color:#cfcfcf;
+      border-top:1px solid rgba(255,255,255,.1)
+    }
+
+    /* simple reveal on scroll */
+    .reveal{opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease}
+    .reveal.show{opacity:1; transform:none}
+  </style>
 </head>
 <body>
   <!-- NAV -->
   <nav class="nav">
     <div class="left">
-      <img src="./assets/logo.png" alt="RK Events logo" class="logo"/>
+      <img src="./logo.png" alt="RK Events logo" class="logo"/>
       <a href="index.html" class="brand">RK Events</a>
     </div>
+    <button class="menu-btn" aria-label="Toggle menu">☰</button>
     <div class="links">
       <a href="index.html" class="active">Home</a>
       <a href="about.html">About</a>
@@ -27,7 +123,7 @@
       <h1>Make Every Moment Grand 🎉</h1>
       <p>Premium décor for Weddings, Birthdays & Corporate events — at prices you’ll love.</p>
       <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:8px">
-        <a class="btn primary" href="https://wa.me/919999999999?text=Hi%20RK%20Events%2C%20I%20want%20a%20quote">Get Quote on WhatsApp</a>
+        <a class="btn primary" id="whatsBtn" href="https://wa.me/919999999999?text=Hi%20RK%20Events%2C%20I%20want%20a%20quote">Get Quote on WhatsApp</a>
         <a class="btn ghost" href="contact.html">Call / Enquiry</a>
       </div>
     </div>
@@ -36,12 +132,12 @@
   <!-- SERVICES -->
   <section class="section">
     <div class="container">
-      <h2 style="margin:0 0 12px">Our Services</h2>
+      <h2 class="reveal" style="margin:0 0 12px">Our Services</h2>
       <div class="grid">
-        <div class="card"><h3>Wedding Decor</h3><p class="muted">Stage, varmala gate, mandap, floral backdrops.</p></div>
-        <div class="card"><h3>Birthday Themes</h3><p class="muted">Balloon arches, cut-outs, photo booth & cake table.</p></div>
-        <div class="card"><h3>Corporate Events</h3><p class="muted">Brand backdrops, standees, launch setups.</p></div>
-        <div class="card"><h3>Custom Packages</h3><p class="muted">Budget-friendly combos tailored to your venue.</p></div>
+        <div class="card reveal"><h3>Wedding Decor</h3><p class="muted">Stage, varmala gate, mandap, floral backdrops.</p></div>
+        <div class="card reveal"><h3>Birthday Themes</h3><p class="muted">Balloon arches, cut-outs, photo booth & cake table.</p></div>
+        <div class="card reveal"><h3>Corporate Events</h3><p class="muted">Brand backdrops, standees, launch setups.</p></div>
+        <div class="card reveal"><h3>Custom Packages</h3><p class="muted">Budget-friendly combos tailored to your venue.</p></div>
       </div>
     </div>
   </section>
@@ -49,15 +145,44 @@
   <!-- WHY US -->
   <section class="section" style="background:#0b0b0b">
     <div class="container grid">
-      <div class="card"><h3>Best Price</h3><p class="muted">Transparent quotes. No surprises.</p></div>
-      <div class="card"><h3>On-Time Delivery</h3><p class="muted">Setup done before guests arrive.</p></div>
-      <div class="card"><h3>Premium Materials</h3><p class="muted">Fresh flowers, quality props & lighting.</p></div>
-      <div class="card"><h3>Support</h3><p class="muted">We’re one call away — always.</p></div>
+      <div class="card reveal"><h3>Best Price</h3><p class="muted">Transparent quotes. No surprises.</p></div>
+      <div class="card reveal"><h3>On-Time Delivery</h3><p class="muted">Setup done before guests arrive.</p></div>
+      <div class="card reveal"><h3>Premium Materials</h3><p class="muted">Fresh flowers, quality props & lighting.</p></div>
+      <div class="card reveal"><h3>Support</h3><p class="muted">We’re one call away — always.</p></div>
     </div>
   </section>
 
   <footer class="footer">© <span id="y"></span> RK Events — Best Decoration at Best Price</footer>
-  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+
+  <!-- INTERNAL JS -->
+  <script>
+    // set current year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // mobile menu toggle
+    const menuBtn = document.querySelector('.menu-btn');
+    const links = document.querySelector('.links');
+    menuBtn.addEventListener('click', () => links.classList.toggle('open'));
+
+    // close menu when a link is clicked (mobile)
+    links.querySelectorAll('a').forEach(a => 
+      a.addEventListener('click', () => links.classList.remove('open'))
+    );
+
+    // simple reveal on scroll
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target); }
+      });
+    }, {threshold: .15});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+    // WhatsApp CTA tracking (basic)
+    const whats = document.getElementById('whatsBtn');
+    whats.addEventListener('click', ()=> {
+      console.log('WhatsApp CTA clicked');
+      // yahan future me analytics hook add kar sakte ho
+    });
+  </script>
 </body>
 </html>
-
